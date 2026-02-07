@@ -65,4 +65,5 @@ dependencies {
     implementation(libs.bundles.ktor)
     implementation(libs.bundles.koin)
     implementation(libs.bundles.kotlinx.coroutines)
+    implementation(libs.bundles.paging3)
 }
