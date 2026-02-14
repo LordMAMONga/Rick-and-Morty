@@ -55,7 +55,8 @@ class RealCharacterRepository(
         client.safeGet<CharacterDto>(url = "character/${characterId}", dispatcher = Dispatchers.IO)
             .map { it.toDomain() }
 
-    override suspend fun getCharacterByIds(characterIds: List<Int>): DataResult<List<Character>, AppError> =
+
+    override suspend fun getCharactersByIds(characterIds: List<Int>): DataResult<List<Character>, AppError> =
         client.safeGet<List<CharacterDto>>(
             url = "character/${
                 characterIds.joinToString(separator = ",", prefix = "[", postfix = "]")
