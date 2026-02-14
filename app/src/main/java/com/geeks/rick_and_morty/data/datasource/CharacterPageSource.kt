@@ -2,38 +2,41 @@ package com.geeks.rick_and_morty.data.datasource
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.geeks.rick_and_morty.domain.model.Character
+import com.geeks.rick_and_morty.domain.model.CharacterParams
 import com.geeks.rick_and_morty.domain.model.CharacterResponse
 import com.geeks.rick_and_morty.network.model.AppError
 import com.geeks.rick_and_morty.network.model.DataResult
-import com.geeks.rick_and_morty.network.model.onError
-import com.geeks.rick_and_morty.network.model.onSuccess
-import com.geeks.rick_and_morty.domain.model.Character
 
 const val START_INDEX = 1
 
 class CharacterPageSource(
-    val result: DataResult<CharacterResponse, AppError>
+    private val requestParams: CharacterParams,
+    private val request: suspend (CharacterParams) -> DataResult<CharacterResponse, AppError>,
 ) : PagingSource<Int, Character>() {
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Character > {
-        val currentKey = params.key ?: START_INDEX
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Character> {
+        val page = params.key ?: START_INDEX
 
-        try {
-            result.onSuccess { data ->
-                return LoadResult.Page(
-                    data = data.results.orEmpty(),
-                    prevKey = data.info.prev.let { currentKey.minus(1) },
-                    nextKey = data.info.next.let { currentKey.plus(1) }
+        return when (val result = request(requestParams.copy(page = page))) {
+            is DataResult.Success -> {
+                val characters = result.data.results
+
+                LoadResult.Page(
+                    data = characters,
+                    prevKey = if (page == START_INDEX) null else page - 1,
+                    nextKey = if (characters.isEmpty() || result.data.info.next == null) null else page + 1
                 )
-            }.onError { error ->
-                return LoadResult.Error(throwable = Throwable("Error on Paging Source"))
-
             }
-
-        } catch (e: Exception) {
-            return LoadResult.Error(e)
+            is DataResult.Error -> {
+                val throwable = if (result.error is AppError.Api.TooManyRequests) {
+                    result.error.copy(message = "Неа тут ничего нету").asThrowable()
+                } else {
+                    result.error.asThrowable()
+                }
+                LoadResult.Error(throwable)
+            }
         }
-        return null
     }
 
     override fun getRefreshKey(state: PagingState<Int, Character>): Int? {
