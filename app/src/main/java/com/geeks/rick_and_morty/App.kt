@@ -4,6 +4,7 @@ import android.app.Application
 import com.geeks.rick_and_morty.data.di.dataModule
 import com.geeks.rick_and_morty.domain.di.domainModule
 import com.geeks.rick_and_morty.network.di.networkModule
+import com.geeks.rick_and_morty.ui.di.uiModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -18,7 +19,7 @@ class App : Application() {
             androidLogger(level = Level.DEBUG)
 
             modules(
-                dataModule, domainModule, networkModule
+                dataModule, domainModule, networkModule, uiModule
             )
         }
     }

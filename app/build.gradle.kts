@@ -66,4 +66,6 @@ dependencies {
     implementation(libs.bundles.koin)
     implementation(libs.bundles.kotlinx.coroutines)
     implementation(libs.bundles.paging3)
-}
+    implementation(libs.coil.compose)
+
+    implementation(libs.androidx.material3)}
