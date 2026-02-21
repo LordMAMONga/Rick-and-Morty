@@ -73,6 +73,11 @@ dependencies {
     implementation(project(":feature:character:data"))
     implementation(project(":feature:character:domain"))
     implementation(project(":feature:character:ui"))
+  
+
+    implementation(project(":feature:episode:data"))
+    implementation(project(":feature:episode:domain"))
+    implementation(project(":feature:episode:ui"))
 
     implementation(libs.coil.compose)
 }

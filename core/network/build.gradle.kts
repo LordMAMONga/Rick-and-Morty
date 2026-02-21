@@ -6,6 +6,7 @@ kotlin {
 
     dependencies {
         api(libs.bundles.ktor)
+        api(libs.androidx.paging.common)
         implementation(libs.koin.core)
         implementation(libs.bundles.kotlinx.coroutines)
     }

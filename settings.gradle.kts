@@ -28,3 +28,8 @@ include(":core:network")
 include(":feature:character:data")
 include(":feature:character:domain")
 include(":feature:character:ui")
+
+
+include(":feature:episode:data")
+include(":feature:episode:domain")
+include(":feature:episode:ui")
