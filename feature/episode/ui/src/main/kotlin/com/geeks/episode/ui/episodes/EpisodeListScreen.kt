@@ -12,25 +12,22 @@ import com.geeks.episode.ui.components.EpisodeListItem
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun CharacterListScreen(modifier: Modifier = Modifier) {
+fun EpisodeListScreen(modifier: Modifier = Modifier) {
     val viewModel = koinViewModel<EpisodeListViewModel>()
     val episodeList = viewModel.pagingData.collectAsLazyPagingItems()
     val listState = rememberLazyListState()
 
-    Scaffold(modifier) { innerPadding ->
-        LazyColumn(modifier = Modifier.padding(innerPadding), state = listState) {
-            items(
-                count = episodeList.itemCount,
-                key = episodeList.itemKey { episode -> episode.id }) { index ->
-                val item = episodeList[index]
 
-                item?.let { episode ->
-                    EpisodeListItem(
-                        episode = episode
-                    )
-                }
+    LazyColumn(state = listState) {
+        items(count = episodeList.itemCount) { index ->
+            val item = episodeList[index]
 
+            item?.let { episode ->
+                EpisodeListItem(
+                    episode = episode
+                )
             }
         }
+
     }
 }

@@ -55,4 +55,6 @@ dependencies {
     implementation(project(":feature:character:domain"))
 
     implementation(libs.coil.compose)
+
+    implementation(project(":core:network"))
 }
